@@ -1,0 +1,10 @@
+# Tắt liệt kê thư mục
+Options -Indexes
+
+RewriteEngine On
+RewriteBase /
+
+# Chỉ chuyển hướng yêu cầu không phải là tệp hoặc thư mục có thực
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
