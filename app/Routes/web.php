@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Libs\Router;
+use App\Utils\AppLoader;
 
-Router::get('/', [HomeController::class, 'index']);
+AppLoader::require('Routes/Url/HomeUrl.php');
 

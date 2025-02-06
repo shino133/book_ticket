@@ -5,10 +5,10 @@ use FastRoute\RouteCollector;
 use FastRoute\Dispatcher;
 use function FastRoute\simpleDispatcher;
 
-class Router
+class Route
 {
   private static $routes = [];
-  private static $dispatcher;
+  private static ?Dispatcher $dispatcher = null;
 
   public static function get(string $path, callable|array $handler): void
   {
@@ -66,16 +66,15 @@ class Router
         $handler = $routeInfo[1];
         $vars = $routeInfo[2];
 
-        // Xử lý Controller
         if (is_array($handler) && count($handler) === 2) {
           [$controller, $method] = $handler;
           if (class_exists($controller) && method_exists($controller, $method)) {
-            call_user_func([new $controller, $method], $vars);
+            call_user_func([new $controller, $method], ...array_values($vars));
           } else {
             echo 'Controller or method not found.';
           }
         } elseif (is_callable($handler)) {
-          call_user_func($handler, $vars);
+          call_user_func($handler, ...array_values($vars));
         } else {
           echo 'Handler not callable';
         }
