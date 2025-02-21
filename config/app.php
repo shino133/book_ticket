@@ -233,5 +233,5 @@ return [
     ],
 
     // Custom app config
-    'currency' => 'EGP',
+    'currency' => 'VND',
 ];
