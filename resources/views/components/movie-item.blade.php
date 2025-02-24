@@ -6,7 +6,7 @@
             <!-- Movie List Image -->
             <div class="listing-image">
                 <!-- Image -->
-                <img src="{{ asset('storage/'.$movie->image)  }}" alt="">
+                <img src="{{ asset('storage/' . $movie->image) }}" alt="">
             </div>
 
             <!-- Movie List Content -->
@@ -15,7 +15,7 @@
 
                     <!-- Play Button -->
                     <div class="play-btn">
-                        <a href="{{ route('movies.show',$movie->id) }}#reserve-now" class="play-video">
+                        <a href="{{ route('movies.show', $movie->id) }}#reserve-now" class="play-video">
                             <i class="fa fa-ticket"></i>
                         </a>
                     </div>
@@ -26,14 +26,14 @@
                     <div class="stars">
                         <div class="rating">
                             <i class="fa fa-star"></i>
-                            <span>{{ number_format($movie->rating,1) }}/5</span>
+                            <span>{{ number_format($movie->rating, 1) }}/5</span>
                             <span class="category">{{ $movie->category->title }}</span>
                         </div>
                     </div>
 
                     <p>{{ Str::limit($movie->storyline, 150, '...') }}</p>
 
-                    <a href="{{ route('movies.show',$movie->id) }}" class="btn btn-main btn-effect">Chi Tiết</a>
+                    <a href="{{ route('movies.show', $movie->id) }}" class="btn btn-main btn-effect">Chi Tiết</a>
                 </div>
             </div>
 

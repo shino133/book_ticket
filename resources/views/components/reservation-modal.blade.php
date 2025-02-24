@@ -9,10 +9,10 @@
         </div>
 
         @auth
-        <div class="tab" style="display: none">
-            <h2>Payment details</h2>
-            @include('components.payment-view')
-        </div>
+            <div class="tab" style="display: none">
+                <h2>Payment details</h2>
+                @include('components.payment-view')
+            </div>
         @endauth
 
 

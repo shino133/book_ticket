@@ -147,7 +147,7 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                     Trung tâm cảnh báo
+                                    Trung tâm cảnh báo
                                 </h6>
                                 @foreach ($requests->take(5) as $request)
                                     <a class="dropdown-item d-flex align-items-center"
@@ -160,7 +160,8 @@
                                         <div>
                                             <div class="small text-gray-500">
                                                 {{ $request->created_at->diffForHumans() }}</div>
-                                            <span class="font-weight-bold">{{ $request->username }} đã yêu cầu trở thành người quản lý.</span>
+                                            <span class="font-weight-bold">{{ $request->username }} đã yêu cầu trở
+                                                thành người quản lý.</span>
                                         </div>
                                     </a>
                                 @endforeach
@@ -220,7 +221,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Bản quyền &copy; {{ config('app.name') }} 2021</span>
+                        <span>Bản quyền &copy; {{ config('app.name') }} 2025</span>
                     </div>
                 </div>
             </footer>
@@ -248,7 +249,8 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc phiên làm việc hiện tại.</div>
+                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc phiên làm việc hiện tại.
+                </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
                     <form id="logout_form" method="POST" action="{{ route('logout') }}">

@@ -7,7 +7,6 @@ use App\Models\Movie;
 use App\Models\Role;
 use App\Models\Show;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -20,8 +19,9 @@ class ManagerMovieController extends Controller
 
         // Thống kê số lượng phim theo danh mục
         $categories = $movies->groupBy('category_id');
-        $categoryLabels = $categories->map(fn($category) => $category[0]->category->title)->values();
-        $categoryCounts = $categories->map(fn($category) => $category->count())->values();
+
+        $categoryLabels = $categories->map(fn ($category) => $category[0]->category->title)->values();
+        $categoryCounts = $categories->map(fn ($category) => $category->count())->values();
 
         // Thống kê số lượng phim theo năm phát hành
         $releaseYears = $movies->map(function ($movie) {
@@ -30,7 +30,7 @@ class ManagerMovieController extends Controller
         })->sortBy('release_year')->groupBy('release_year');
 
         $years = $releaseYears->keys();
-        $yearCounts = $releaseYears->map(fn($year) => $year->count())->values();
+        $yearCounts = $releaseYears->map(fn ($year) => $year->count())->values();
 
         return view('manager.dashboard', [
             'numOfShows' => $shows->count(),

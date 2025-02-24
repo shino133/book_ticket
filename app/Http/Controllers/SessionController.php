@@ -2,34 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 class SessionController extends Controller
 {
-    public function store()
+    public function store(Request $request)
     {
-        // validate form data
-        $credentials = request()->validate([
+        // Validate form data
+        $credentials = $request->validate([
             'email' => ['required', 'email', 'max:255'],
             'password' => ['required'],
         ]);
 
-        // validate credentials
-        if (auth()->attempt($credentials, isset($credentials['remember-me']) && $credentials['remember-me'] === 'yes')) {
-            // regenerate session for security and redirect to intended page
-            request()->session()->regenerate();
-            return redirect()->intended()->with(['flash' => 'success', 'message' => 'Signed in!']);
+        // Kiểm tra "Remember Me"
+        $remember = $request->boolean('remember-me');
+
+        // Validate credentials
+        if (Auth::attempt($credentials, $remember)) {
+            // Regenerate session để tránh tấn công Session Fixation
+            $request->session()->regenerate();
+
+            return redirect()->intended()
+                ->with('status', 'success')
+                ->with('message', 'Signed in!');
         }
 
-        // return with error on credential validation erors
-        return back()->withErrors(['email' => 'Your credentials could not be verified.']);
+        // Trả về lỗi nếu đăng nhập thất bại
+        return back()
+            ->withInput()
+            ->withErrors(['email' => 'Your credentials could not be verified.']);
     }
 
-    public function destroy()
+    public function destroy(Request $request)
     {
-        // log user out and redirect
-        auth()->logout();
-        return redirect('/')->with([
-            'flash' => 'success',
-            'message' => 'Logged Out!',
-        ]);
+        Auth::logout();
+
+        // Xóa session của user
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/')
+            ->with('status', 'success')
+            ->with('message', 'Logged Out!');
     }
 }
