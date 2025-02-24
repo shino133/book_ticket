@@ -9,21 +9,32 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class ReservationFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * The name of the factory's corresponding model.
      */
-    public function definition()
+    protected $model = \App\Models\Reservation::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
     {
+        // Lấy suất chiếu còn chỗ ngẫu nhiên
+        $show = Show::where('remaining_seats', '>', 1)->inRandomOrder()->first();
+        $user = User::inRandomOrder()->first();
+
+        if (!$show || !$user) {
+            return []; // Tránh lỗi nếu không có dữ liệu
+        }
+
+        // Giảm số ghế còn lại trong suất chiếu
+        $seatNumber = fake()->numberBetween(0, $show->room->size - 1);
+        $show->decrement('remaining_seats');
+
         return [
-            'show_id' => Show::where('remaining_seats', '>', 1)->get()->random(),
-            'user_id' => User::all()->random(),
-            'seat_number' => function (array $attr) {
-                $show = Show::find($attr['show_id']);
-                $show->remaining_seats--;
-                $show->save();
-                return $this->faker->numberBetween(0, $show->room->size - 1);
-            },
+            'show_id' => $show->id,
+            'user_id' => $user->id,
+            'seat_number' => $seatNumber,
         ];
     }
 }
+

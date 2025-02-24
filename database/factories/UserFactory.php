@@ -3,47 +3,45 @@
 namespace Database\Factories;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * The name of the factory's corresponding model.
      */
-    public function definition()
+    protected $model = User::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
     {
         return [
-            'username' => $this->faker->unique()->username(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'username' => fake()->unique()->userName(),
+            'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('password'), // Mã hóa mật khẩu an toàn hơn
             'remember_token' => Str::random(10),
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->optional()->lastName(),
-            'wants_manager' => $this->faker->boolean(),
-            'role_id' => function ($attr) {
-                if ($attr['wants_manager']) {
-                    return Role::firstWhere('code', Role::CUSTOMER_CODE);
-                }
-                return Role::all()->collect()->random();
-            },
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->optional()->lastName(),
+            'wants_manager' => fake()->boolean(),
+            'role_id' => fn(array $attributes) =>
+                $attributes['wants_manager']
+                    ? Role::firstWhere('code', Role::CUSTOMER_CODE)?->id
+                    : Role::inRandomOrder()->first()?->id,
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function unverified()
+    public function unverified(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
+        return $this->state(fn(array $attributes) => [
+            'email_verified_at' => null,
+        ]);
     }
 }
