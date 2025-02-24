@@ -32,7 +32,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="password">Mật KhẩuKhẩu*</label>
+                                    <label for="password">Mật Khẩu*</label>
                                     <input type="password" class="form-control" id="password" name="password"
                                         placeholder="Mật Khẩu của bạn *" required />
                                 </div>
@@ -40,7 +40,7 @@
                                 <div class="form-group">
                                     <div class="checkbox pad-bottom-10">
                                         <input id="remember-me" type="checkbox" name="remember-me" value="yes">
-                                        <label for="remember-me">Giữ tôi đăng nhập</label>
+                                        <label for="remember-me">Ghi nhớ đăng nhập</label>
                                     </div>
                                 </div>
 
@@ -53,7 +53,7 @@
 
                             <div class="bottom-links">
                                 <span>
-                                Bạn chưa phải là thành viên?
+                                    Bạn chưa phải là thành viên?
                                     <a href="{{ route('register') }}">Đăng ký</a>
                                 </span>
                             </div>
