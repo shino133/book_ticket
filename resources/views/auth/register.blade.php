@@ -28,7 +28,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label for="first_name">First Name*</label>
+                                        <label for="first_name">Tên*</label>
                                         <input name="first_name" id="first_name" class="form-control" type="text"
                                             value="{{ old('first_name') }}" required />
                                         @include('components.error-message', [
@@ -36,7 +36,7 @@
                                         ])
                                     </div>
                                     <div class="form-group col-6">
-                                        <label for="last_name">Last Name</label>
+                                        <label for="last_name">Họ</label>
                                         <input name="last_name" id="last_name" class="form-control" type="text"
                                             value="{{ old('last_name') }}" />
                                         @include('components.error-message', ['field_name' => 'last_name'])
@@ -59,7 +59,7 @@
 
                                 <div class="row">
                                     <div class="form-group col-6">
-                                        <label for="password">Mật KhẩuKhẩu*</label>
+                                        <label for="password">Mật Khẩu*</label>
                                         <input name="password" id="password" class="form-control" type="password"
                                             required />
                                         @include('components.error-message', ['field_name' => 'password'])
@@ -73,7 +73,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="role_id">Vai trò*</label>
+                                    <label for="role_id">Vai trò</label>
                                     <select name="role_id" id="role_id" required>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}"
@@ -92,7 +92,7 @@
 
                             <div class="bottom-links">
                                 <span>
-                                Bạn đã có tài khoản?
+                                    Bạn đã có tài khoản?
                                     <a href="{{ route('login') }}">Đăng nhập</a>
                                 </span>
                             </div>
