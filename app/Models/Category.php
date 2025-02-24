@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class Category extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = ['title'];
-    const CATEGORIES = ['Action', 'Drama', 'Comedy', 'Romance', 'Horror'];
-    use HasFactory;
+
+    /**
+     * Predefined categories.
+     *
+     * @var array<string>
+     */
+    public const CATEGORIES = ['Action', 'Drama', 'Comedy', 'Romance', 'Horror'];
 }
