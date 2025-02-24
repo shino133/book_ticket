@@ -5,36 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Reservation;
 use App\Models\Show;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class ReservationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $attr = $request->validate([
@@ -46,7 +24,7 @@ class ReservationController extends Controller
         foreach ($attr['selected_seats'] as $seat) {
             Reservation::create([
                 'show_id' => $attr['show_id'],
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'seat_number' => $seat,
             ]);
         }
@@ -59,46 +37,7 @@ class ReservationController extends Controller
         // return success
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Reservation $reservation)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reservation $reservation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Reservation $reservation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Reservation  $reservation
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Reservation $reservation)
     {
         // increment show's remaining seats
@@ -110,7 +49,7 @@ class ReservationController extends Controller
 
         return redirect('dashboard')->with([
             'flash' => 'success',
-            'message' => 'Successfully canceled your reservation. You will be refunded the ticket\'s amount.',
+            'message' => 'Hủy đặt chỗ thành công. Bạn sẽ được hoàn lại số tiền vé.',
         ]);
     }
 }
