@@ -8,7 +8,12 @@
         <div class="container">
             <div class="row">
                 @php
-                    $containerClasses = ['col-sm-6 col-xs-12', 'col-sm-6 d-none d-sm-block', 'd-none d-lg-block', 'd-none d-lg-block'];
+                    $containerClasses = [
+                        'col-sm-6 col-xs-12',
+                        'col-sm-6 d-none d-sm-block',
+                        'd-none d-lg-block',
+                        'd-none d-lg-block',
+                    ];
                 @endphp
                 @foreach ($top4movies as $movie)
                     @include('components.movie-item-dark', [
@@ -38,7 +43,9 @@
                     <div class="icon-box2">
                         <i class="fa fa-film"></i>
                         <h4 class="title">Chọn phim của bạn</h4>
-                        <p>Duyệt qua bộ sưu tập phim phong phú và hấp dẫn của chúng tôi. Vẫn không biết nên xem gì? hãy xem <a href={{ route('movies.index') }} class="text-primary">khuyến nghị.</a></p>
+                        <p>Duyệt qua bộ sưu tập phim phong phú và hấp dẫn của chúng tôi. Vẫn không biết nên xem gì? hãy xem
+                            <a href={{ route('movies.index') }} class="text-primary">khuyến nghị.</a>
+                        </p>
                     </div>
 
                     <div class="icon-box2">
@@ -52,13 +59,15 @@
                     <div class="icon-box2">
                         <i class="icon-login"></i>
                         <h4 class="title">Đăng ký</h4>
-                        <p>Đăng ký tài khoản của bạn để đặt chỗ và thanh toán vé. Ngoài ra, để cập nhật các ưu đãi và tin tức mới nhất.</p>
+                        <p>Đăng ký tài khoản của bạn để đặt chỗ và thanh toán vé. Ngoài ra, để cập nhật các ưu đãi và tin
+                            tức mới nhất.</p>
                     </div>
 
                     <div class="icon-box2">
                         <i class="icon-heart"></i>
                         <h4 class="title">Thưởng thức!</h4>
-                        <p>Hãy thưởng thức bộ phim của bạn tại một trong những phòng chiếu phim của chúng tôi, hãy gọi đồ ăn nhẹ khi bạn đang ở đó. Sự tiện lợi của bạn là ưu tiên hàng đầu của chúng tôi.</p>
+                        <p>Hãy thưởng thức bộ phim của bạn tại một trong những phòng chiếu phim của chúng tôi, hãy gọi đồ ăn
+                            nhẹ khi bạn đang ở đó. Sự tiện lợi của bạn là ưu tiên hàng đầu của chúng tôi.</p>
                     </div>
                 </div>
 
@@ -105,7 +114,8 @@
                 <div class="features-wrapper">
                     <h3 class="title">Xem tất cả những bộ phim mới nhất ngay khi chúng được phát hành!</h3>
                     @guest
-                        <p>Đăng ký hoặc đăng ký ngay để đặt vé cho riêng bạn. Và nhận thông báo về các ưu đãi và tin tức mới!</p>
+                        <p>Đăng ký hoặc đăng ký ngay để đặt vé cho riêng bạn. Và nhận thông báo về các ưu đãi và tin tức mới!
+                        </p>
                         <a class="btn btn-main btn-effect" href="{{ route('register') }}">Đăng Ký</a>
                     @endguest
 
