@@ -90,7 +90,8 @@
                                 @endcan
                                 <form id="logout_form" method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();">Đăng Xuất </a>
+                                    <a href="javascript:{}" onclick="document.getElementById('logout_form').submit();">Đăng
+                                        Xuất </a>
                                 </form>
                             </div>
                         </li>
