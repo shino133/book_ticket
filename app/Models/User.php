@@ -9,27 +9,21 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable, HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Define default attributes.
      */
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'username',
-        'email',
-        'password',
-        'role_id',
-        'wants_manager',
-    ];
+    protected function defaults(): array
+    {
+        return [
+            'role_id' => null,
+            'wants_manager' => false,
+        ];
+    }
 
     /**
      * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -38,18 +32,22 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be cast.
-     *
-     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
-    public function setPasswordAttribute($password)
+    /**
+     * Mutator for hashing passwords.
+     */
+    public function setPasswordAttribute($password): void
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
+    /**
+     * Define relationships.
+     */
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
@@ -60,8 +58,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function isAdmin()
+    /**
+     * Computed property to check if the user is an admin.
+     */
+    public function isAdmin(): bool
     {
-        return $this->role->code === Role::ADMIN_CODE;
+        return $this->role?->code === Role::ADMIN_CODE;
     }
 }
