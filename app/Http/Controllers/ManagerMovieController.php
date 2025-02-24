@@ -19,6 +19,7 @@ class ManagerMovieController extends Controller
 
         // Thống kê số lượng phim theo danh mục
         $categories = $movies->groupBy('category_id');
+
         $categoryLabels = $categories->map(fn ($category) => $category[0]->category->title)->values();
         $categoryCounts = $categories->map(fn ($category) => $category->count())->values();
 
