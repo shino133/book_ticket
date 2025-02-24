@@ -7,44 +7,29 @@ use App\Models\Room;
 use App\Models\Show;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ManagerShowController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
         return view('manager.show-index', [
             'shows' => Show::with('movie')->get(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create(): View
     {
         return view('manager.show-create', [
-            'movies' => Movie::select(['id', 'title'])->get()->pluck('title', 'id'),
-            'rooms' => Room::select(['id', 'size'])->get()->pluck('size', 'id'),
+            'movies' => Movie::pluck('title', 'id'),
+            'rooms' => Room::pluck('size', 'id'),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        // validate attributes
-        $attr = $request->validate([
+        $validated = $request->validate([
             'movie_id' => ['required', Rule::exists(Movie::class, 'id')],
             'room_id' => ['required', Rule::exists(Room::class, 'id')],
             'date' => ['required', 'date', 'after:today'],
@@ -53,58 +38,33 @@ class ManagerShowController extends Controller
             'end_time' => ['required', 'after:start_time'],
         ]);
 
-        // remaining seats according to choice of room
-        $attr['remaining_seats'] = Room::find($attr['room_id'])->size;
+        $validated['remaining_seats'] = Room::findOrFail($validated['room_id'])->size;
 
-        // store show
-        $show = Show::create($attr);
+        $show = Show::create($validated);
 
-        // redirect with success
         return redirect()->route('manager.shows.edit', $show)->with([
             'flash' => 'success',
             'message' => 'Added show successfully',
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Show  $show
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Show $show)
+    public function show(Show $show): View
     {
-        return view('manager.show-show', [
-            'show' => $show,
-        ]);
+        return view('manager.show-show', compact('show'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Show  $show
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Show $show)
+    public function edit(Show $show): View
     {
         return view('manager.show-edit', [
             'show' => $show,
-            'movies' => Movie::select(['id', 'title'])->get()->pluck('title', 'id'),
-            'rooms' => Room::select(['id', 'size'])->get()->pluck('size', 'id'),
+            'movies' => Movie::pluck('title', 'id'),
+            'rooms' => Room::pluck('size', 'id'),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Show  $show
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Show $show)
+    public function update(Request $request, Show $show): RedirectResponse
     {
-        // validate attributes
-        $attr = $request->validate([
+        $validated = $request->validate([
             'movie_id' => ['required', Rule::exists(Movie::class, 'id')],
             'date' => ['required', 'date', 'after:today'],
             'price' => ['required', 'numeric', 'gte:0'],
@@ -112,26 +72,15 @@ class ManagerShowController extends Controller
             'end_time' => ['required', 'after:start_time'],
         ]);
 
-        // delete room from attributes to avoid updating it
-        unset($attr['room']);
+        $show->update($validated);
 
-        // update show
-        $show->update($attr);
-
-        // redirect to edit page with message
         return redirect()->route('manager.shows.edit', $show)->with([
             'flash' => 'success',
             'message' => 'Updated Show Successfully',
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Show  $show
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Show $show)
+    public function destroy(Show $show): RedirectResponse
     {
         $show->delete();
 
