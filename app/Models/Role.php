@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class Role extends Model
 {
-    use HasFactory;
+    /**
+     * Role codes.
+     */
+    public const ADMIN_CODE = 1;
+    public const MANAGER_CODE = 2;
+    public const CUSTOMER_CODE = 3;
 
-    const ADMIN_CODE = 1;
-    const MANAGER_CODE = 2;
-    const CUSTOMER_CODE = 3;
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
