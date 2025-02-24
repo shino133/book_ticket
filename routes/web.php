@@ -32,27 +32,31 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('/contact', function () {
-    return view('pages.contact-us');
-})->name('contact-us');
+Route::view('/contact', 'pages.contact-us')->name('contact-us');
 
-// Login/Register routes
+//----------------------------------------------------------------------
+// Routes dành cho khách (guest)
+//----------------------------------------------------------------------
 Route::middleware('guest')->group(function () {
+    Route::view('login', 'auth.login')->name('login');
     Route::post('login', [SessionController::class, 'store']);
-    Route::get('login', function () {
-        return view('auth.login');
-    })->name('login');
 
-    Route::post('register', [UserController::class, 'store'])->name('register');
-    Route::get('register', function () {
-        return view('auth.register', [
-            'roles' => Role::all()->collect()->whereNotIn('code', Role::ADMIN_CODE),
-        ]);
-    })->name('register');
+    Route::view('register', 'auth.register', [
+        'roles' => Role::whereNot('code', Role::ADMIN_CODE)->get()
+    ])->name('register');
+    Route::post('register', [UserController::class, 'store']);
 });
-Route::post('logout', [SessionController::class, 'destroy'])->name('logout')->middleware('auth');
 
+//----------------------------------------------------------------------
+// Route đăng xuất (auth required)
+//----------------------------------------------------------------------
+Route::post('logout', [SessionController::class, 'destroy'])
+    ->name('logout')
+    ->middleware('auth');
+
+//----------------------------------------------------------------------
 // Leads
+//----------------------------------------------------------------------
 Route::post('leads', [LeadController::class, 'store'])->middleware('guest')->name('leads');
 
 // User Movies
