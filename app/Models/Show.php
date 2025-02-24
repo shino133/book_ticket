@@ -2,29 +2,30 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
 class Show extends Model
 {
-    use HasFactory;
+    /**
+     * Define default attributes.
+     */
+    protected function defaults(): array
+    {
+        return [
+            'remaining_seats' => 0,
+        ];
+    }
 
-    protected $fillable = [
-        'movie_id',
-        'room_id',
-        'price',
-        'date',
-        'start_time',
-        'end_time',
-        'remaining_seats',
-    ];
-
+    /**
+     * The attributes that should be cast.
+     */
     protected $casts = [
         'date' => 'date',
         'start_time' => 'datetime',
         'end_time' => 'datetime',
     ];
 
+    /**
+     * Define relationships.
+     */
     public function room()
     {
         return $this->belongsTo(Room::class);
@@ -45,18 +46,13 @@ class Show extends Model
         return $this->belongsTo(Movie::class);
     }
 
-    protected static $relations_to_cascade = ['reservations'];
-
-    protected static function boot()
+    /**
+     * Handle cascading deletion of related models.
+     */
+    protected static function booted()
     {
-        parent::boot();
-
         static::deleting(function ($resource) {
-            foreach (static::$relations_to_cascade as $relation) {
-                foreach ($resource->{$relation}()->get() as $item) {
-                    $item->delete();
-                }
-            }
+            $resource->reservations()->delete();
         });
     }
 }
