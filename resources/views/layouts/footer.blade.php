@@ -16,7 +16,8 @@
                         <img src={{ asset('images/branding/logos/logo-w.png') }} alt="white logo" class="logo-white">
                         <p class="nomargin">{{ config('app.name') }} là hệ thống đặt vé được thiết kế cho
                             rạp chiếu phim. Nó có rất nhiều tính năng, từ đặt vé thông thường đến
-                            vai trò nhiều người dùng. Nó được phát triển bằng laravel 8. Chúng tôi hy vọng bạn thích nó.</p>
+                            vai trò nhiều người dùng. Nó được phát triển bằng laravel 8. Chúng tôi hy vọng bạn thích nó.
+                        </p>
                     </div>
                 </div>
                 <!-- End of Widget 1 -->
@@ -41,9 +42,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="widget widget-blog">
                         @php
-                            $newestMovies = \App\Models\Movie::orderBy('release_date', 'desc')
-                                ->take(3)
-                                ->get();
+                            $newestMovies = \App\Models\Movie::orderBy('release_date', 'desc')->take(3)->get();
                         @endphp
                         <h4 class="widget-title">Phim Mới Nhất</h4>
 
