@@ -2,19 +2,24 @@
 
 namespace Database\Factories;
 
+use App\Models\Lead;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LeadFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * The name of the factory's corresponding model.
      */
-    public function definition()
+    protected $model = Lead::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
     {
         return [
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => fake()->unique()->safeEmail(), // Dùng fake() thay vì $this->faker
         ];
     }
 }
+

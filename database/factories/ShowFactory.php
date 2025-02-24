@@ -4,25 +4,35 @@ namespace Database\Factories;
 
 use App\Models\Movie;
 use App\Models\Room;
+use App\Models\Show;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ShowFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * The name of the factory's corresponding model.
      */
-    public function definition()
+    protected $model = Show::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
     {
+        $room = Room::inRandomOrder()->first();
+        $movie = Movie::inRandomOrder()->first();
+        $startTime = fake()->dateTimeBetween('-3 hours', 'now');
+        $endTime = fake()->dateTimeBetween($startTime, '+3 hours');
+
         return [
-            'movie_id' => Movie::all()->collect()->random(),
-            'room_id' => Room::all()->collect()->random(),
-            'price' => $this->faker->randomFloat(0, 50, 500),
-            'date' => $this->faker->dateTimeBetween('-1 days', '+3 week'),
-            'start_time' => $this->faker->dateTimeBetween('-3 hours', 'now'),
-            'end_time' => $this->faker->dateTimeBetween('now', '+3 hours'),
-            'remaining_seats' => function (array $attr) {return Room::find($attr['room_id'])->size;},
+            'movie_id' => $movie?->id,  // Tránh lỗi nếu Movie chưa có dữ liệu
+            'room_id' => $room?->id,    // Tránh lỗi nếu Room chưa có dữ liệu
+            'price' => fake()->randomFloat(0, 50, 500),
+            'date' => fake()->dateTimeBetween('-1 days', '+3 week'),
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'remaining_seats' => $room?->size ?? 0,  // Tránh lỗi khi không có Room
         ];
     }
 }
+

@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Room;
 use App\Models\Show;
 use App\Models\User;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -16,72 +17,68 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // delete all tables
-        $tables = ['users', 'leads', 'password_resets', 'personal_access_tokens', 'reservations', 'shows'];
+        // Tắt kiểm tra khóa ngoại
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // Xóa dữ liệu các bảng
+        $tables = ['users', 'leads', 'password_resets', 'personal_access_tokens', 'reservations', 'shows', 'roles', 'categories', 'rooms', 'movies'];
         foreach ($tables as $table) {
-            DB::table($table)->delete();
+            DB::table($table)->truncate();
         }
+
+        // Bật lại kiểm tra khóa ngoại
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         $this->seedRoles();
         $this->seedCategories();
         $this->seedRooms();
 
-        // create admin user
-        User::factory(1)->create([
+        // Tạo admin user
+        User::factory()->create([
             'first_name' => 'admin',
             'username' => 'admin',
             'email' => 'admin@cinemat.com',
             'password' => 'adminpass',
-            'role_id' => Role::firstWhere('code', Role::ADMIN_CODE),
+            'role_id' => Role::ADMIN_CODE,
             'wants_manager' => false,
         ]);
 
-        // create manager user
-        User::factory(1)->create([
+        // Tạo manager user
+        User::factory()->create([
             'first_name' => 'manager',
             'username' => 'manager',
             'email' => 'manager@cinemat.com',
             'password' => 'managerpass',
-            'role_id' => Role::firstWhere('code', Role::MANAGER_CODE),
+            'role_id' => Role::MANAGER_CODE,
             'wants_manager' => false,
         ]);
 
-        // create customer user
-        User::factory(1)->create([
+        // Tạo customer user
+        User::factory()->create([
             'first_name' => 'customer',
             'username' => 'customer',
             'email' => 'customer@cinemat.com',
             'password' => 'customerpass',
-            'role_id' => Role::firstWhere('code', Role::CUSTOMER_CODE),
+            'role_id' => Role::CUSTOMER_CODE,
             'wants_manager' => false,
         ]);
 
-        // create 50 customers
-        User::factory(50)->create([
-            'role_id' => Role::firstWhere('code', Role::CUSTOMER_CODE),
-            'wants_manager' => false,
-        ]);
-
-        // create 15 manager requests
-        User::factory(15)->create([
-            'role_id' => Role::firstWhere('code', Role::CUSTOMER_CODE),
-            'wants_manager' => true,
-        ]);
+        User::factory()->count(50)->create();
 
         $this->seedMovies();
         Show::factory(50)->create();
         Reservation::factory(50)->create();
     }
 
-    private function seedMovies()
+    private function seedMovies(): void
     {
-        DB::table('movies')->delete();
+        Movie::truncate(); // Xóa toàn bộ dữ liệu và reset ID
+
         $categories = Category::all();
+
         $movies = [
             // The Dark Knight
             [
@@ -354,49 +351,50 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        foreach ($movies as $movie) {
-            Movie::create($movie);
-        }
+        Movie::insert($movies); // Dùng insert để tối ưu hiệu suất
     }
 
-    private function seedRooms()
+
+    private function seedRooms(): void
     {
-        DB::table('rooms')->delete();
+        Room::truncate(); // Xóa dữ liệu và reset ID về 1
 
         $default_sizes = [20, 30];
+
         foreach ($default_sizes as $size) {
             Room::create(['size' => $size]);
         }
     }
 
-    private function seedCategories()
+    private function seedCategories(): void
     {
-        DB::table('categories')->delete();
+        Category::truncate(); // Xóa dữ liệu và reset ID về 1
 
-        $default_categories = Category::CATEGORIES;
-        foreach ($default_categories as $category) {
+        foreach (Category::CATEGORIES as $category) {
             Category::create(['title' => $category]);
         }
     }
 
-    private function seedRoles()
-    {
-        DB::table('roles')->delete();
 
-        Role::create([
-            'id' => 1,
-            'code' => Role::ADMIN_CODE,
-            'title' => 'Admin',
-        ]);
-        Role::create([
-            'id' => 2,
-            'code' => Role::MANAGER_CODE,
-            'title' => 'Manager',
-        ]);
-        Role::create([
-            'id' => 3,
-            'code' => Role::CUSTOMER_CODE,
-            'title' => 'Customer',
+    private function seedRoles(): void
+    {
+        Role::insert([
+            [
+                'id' => 1,
+                'code' => Role::ADMIN_CODE,
+                'title' => 'Admin',
+            ],
+            [
+                'id' => 2,
+                'code' => Role::MANAGER_CODE,
+                'title' => 'Manager',
+            ],
+            [
+                'id' => 3,
+                'code' => Role::CUSTOMER_CODE,
+                'title' => 'Customer',
+            ],
         ]);
     }
+
 }
