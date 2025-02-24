@@ -16,24 +16,35 @@ class ManagerMovieController extends Controller
     public function dashboard()
     {
         $shows = Show::with('movie')->get();
-        $num_of_shows = $shows->count();
-        $num_of_movies = Movie::all()->count();
-        $num_of_customers = User::all()->where('role.code', Role::CUSTOMER_CODE)->count();
-        $upcoming_shows_count = $shows->whereBetween('date', [Carbon::now(), Carbon::now()->addWeek()])->count();
+        $movies = Movie::with('category')->get();
+
+        // Thống kê số lượng phim theo danh mục
+        $categories = $movies->groupBy('category_id');
+        $categoryLabels = $categories->map(fn($category) => $category[0]->category->title)->values();
+        $categoryCounts = $categories->map(fn($category) => $category->count())->values();
+
+        // Thống kê số lượng phim theo năm phát hành
+        $releaseYears = $movies->map(function ($movie) {
+            $movie->release_year = $movie->release_date->year;
+            return $movie;
+        })->sortBy('release_year')->groupBy('release_year');
+
+        $years = $releaseYears->keys();
+        $yearCounts = $releaseYears->map(fn($year) => $year->count())->values();
 
         return view('manager.dashboard', [
-            'numOfShows' => $num_of_shows,
-            'numOfMovies' => $num_of_movies,
-            'numOfCustomers' => $num_of_customers,
-            'showsNextWeek' => $upcoming_shows_count,
+            'numOfShows' => $shows->count(),
+            'numOfMovies' => $movies->count(),
+            'numOfCustomers' => User::where('role_id', Role::CUSTOMER_CODE)->count(),
+            'showsNextWeek' => $shows->whereBetween('date', [now(), now()->addWeek()])->count(),
+            'categoryLabels' => $categoryLabels,
+            'categoryCounts' => $categoryCounts,
+            'years' => $years,
+            'yearCounts' => $yearCounts,
         ]);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         return view('manager.movie-index', [
@@ -41,125 +52,76 @@ class ManagerMovieController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('manager.movie-create', [
-            'categories' => Category::select(['id', 'title'])->get()->pluck('title', 'id'),
+            'categories' => Category::pluck('title', 'id'),
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        // validate attributes
         $attr = $request->validate([
-            'title' => ['required', 'min:1', 'max:255'],
+            'title' => 'required|string|min:1|max:255',
             'category_id' => ['required', Rule::exists(Category::class, 'id')],
-            'language' => ['required', 'min:1', 'max:255', 'alpha'],
-            'rating' => ['required', 'numeric', 'lte:5', 'gte:0'],
-            'release_date' => ['required', 'date'],
-            'director' => ['required', 'min:1', 'max:255'],
-            'maturity_rating' => ['required', 'min:1', 'max:255', 'alpha_dash'],
-            'running_time' => ['required', 'date_format:H:i'],
-            'storyline' => ['required', 'min:1', 'string'],
-            'image' => ['required', 'image'],
+            'language' => 'required|string|min:1|max:255|alpha',
+            'rating' => 'required|numeric|between:0,5',
+            'release_date' => 'required|date',
+            'director' => 'required|string|min:1|max:255',
+            'maturity_rating' => 'required|string|min:1|max:255|alpha_dash',
+            'running_time' => 'required|date_format:H:i',
+            'storyline' => 'required|string|min:1',
+            'image' => 'required|image',
         ]);
 
-        $attr['image'] = request()->file('image')->store('posters');
+        $attr['image'] = $request->file('image')->store('posters');
 
-        // store show
         $movie = Movie::create($attr);
 
-        // redirect with success
-        return redirect()->route('manager.movies.edit', $movie)->with([
-            'flash' => 'success',
-            'message' => 'Added movie successfully',
-        ]);
+        return redirect()->route('manager.movies.edit', $movie)->withSuccess('Added movie successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function show(Movie $movie)
     {
-        //
+        return view('manager.movie-show', compact('movie'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Movie $movie)
     {
         return view('manager.movie-edit', [
             'movie' => $movie,
-            'categories' => Category::select(['id', 'title'])->get()->pluck('title', 'id'),
+            'categories' => Category::pluck('title', 'id'),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Movie $movie)
     {
         $attr = $request->validate([
-            'title' => ['required', 'min:1', 'max:255'],
+            'title' => 'required|string|min:1|max:255',
             'category_id' => ['required', Rule::exists(Category::class, 'id')],
-            'language' => ['required', 'min:1', 'max:255', 'alpha'],
-            'rating' => ['required', 'numeric', 'lte:5', 'gte:0'],
-            'release_date' => ['required', 'date'],
-            'director' => ['required', 'min:1', 'max:255'],
-            'maturity_rating' => ['required', 'min:1', 'max:255', 'alpha_dash'],
-            'running_time' => ['required', 'date_format:H:i'],
-            'storyline' => ['required', 'min:1', 'string'],
-            'image' => ['image'],
+            'language' => 'required|string|min:1|max:255|alpha',
+            'rating' => 'required|numeric|between:0,5',
+            'release_date' => 'required|date',
+            'director' => 'required|string|min:1|max:255',
+            'maturity_rating' => 'required|string|min:1|max:255|alpha_dash',
+            'running_time' => 'required|date_format:H:i',
+            'storyline' => 'required|string|min:1',
+            'image' => 'nullable|image',
         ]);
 
-        if (isset($attr['image'])) {
-            $attr['image'] = request()->file('image')->store('posters');
+        if ($request->hasFile('image')) {
+            $attr['image'] = $request->file('image')->store('posters');
         }
 
         $movie->update($attr);
 
-        // redirect to edit page with message
-        return redirect()->route('manager.movies.edit', $movie)->with([
-            'flash' => 'success',
-            'message' => 'Updated Movie Successfully',
-        ]);
+        return redirect()->route('manager.movies.edit', $movie)->withSuccess('Updated movie successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Movie $movie)
     {
         $movie->delete();
 
-        return redirect()->route('manager.movies.index')->with([
-            'flash' => 'success',
-            'message' => 'Successfully deleted movie.',
-        ]);
+        return redirect()->route('manager.movies.index')->withSuccess('Successfully deleted movie.');
     }
 }
