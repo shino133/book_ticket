@@ -1,266 +1,263 @@
 @extends('manager.layout')
 
 @section('content')
-<h1 class="h3 mb-4 text-gray-800">View Show</h1>
+    <h1 class="h3 mb-4 text-gray-800">Xem Hiển thị</h1>
 
-<div class="row">
-    @include('components.form-input',[
-    'name'=>'movie_id',
-    'type'=>'text',
-    'label'=>'Movie',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->movie->title,
-    ])
-    @include('components.form-input',[
-    'name'=>'room',
-    'type'=>'text',
-    'label'=>'Remaining Seats',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->remaining_seats.'/'.$show->room->size,
-    ])
-</div>
+    <div class="row">
+        @include('components.form-input', [
+            'name' => 'movie_id',
+            'type' => 'text',
+            'label' => 'Movie',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->movie->title,
+        ])
+        @include('components.form-input', [
+            'name' => 'room',
+            'type' => 'text',
+            'label' => 'Remaining Seats',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->remaining_seats . '/' . $show->room->size,
+        ])
+    </div>
 
-<div class="row">
-    @include('components.form-input',[
-    'name'=>'date',
-    'type'=>'text',
-    'label'=>'Show Date',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->date->toDateString(),
-    ])
-    @include('components.form-input',[
-    'name'=>'price',
-    'type'=>'text',
-    'label'=>'Price',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->price,
-    ])
-</div>
+    <div class="row">
+        @include('components.form-input', [
+            'name' => 'date',
+            'type' => 'text',
+            'label' => 'Show Date',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->date->toDateString(),
+        ])
+        @include('components.form-input', [
+            'name' => 'price',
+            'type' => 'text',
+            'label' => 'Price',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->price,
+        ])
+    </div>
 
-<div class="row">
-    @include('components.form-input',[
-    'name'=>'start_time',
-    'type'=>'text',
-    'label'=>'Start Time',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->start_time->format('H:i'),
-    ])
-    @include('components.form-input',[
-    'name'=>'end_time',
-    'type'=>'text',
-    'label'=>'End Time',
-    'classes'=>'col-6',
-    'required'=>'disabled',
-    'value'=>$show->end_time->format('H:i'),
-    ])
-</div>
+    <div class="row">
+        @include('components.form-input', [
+            'name' => 'start_time',
+            'type' => 'text',
+            'label' => 'Start Time',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->start_time->format('H:i'),
+        ])
+        @include('components.form-input', [
+            'name' => 'end_time',
+            'type' => 'text',
+            'label' => 'End Time',
+            'classes' => 'col-6',
+            'required' => 'disabled',
+            'value' => $show->end_time->format('H:i'),
+        ])
+    </div>
 
-<div class="res-container">
-    <h1>Reservations</h1>
-    <ul class="showcase">
-        <li>
-            <div class="seat"></div>
-            <small>Available</small>
-        </li>
-        <li>
-            <div class="seat selected"></div>
-            <small>Selected</small>
-        </li>
-        <li>
-            <div class="seat sold"></div>
-            <small>Sold</small>
-        </li>
-    </ul>
-    <div class="container cinema-container">
-        <div class="screen"></div>
-        <div class="seats-container">
+    <div class="res-container">
+        <h1>Đặt chỗ</h1>
+        <ul class="showcase">
+            <li>
+                <div class="seat"></div>
+                <small>Có sẵn</small>
+            </li>
+            <li>
+                <div class="seat selected"></div>
+                <small>Đã chọn</small>
+            </li>
+            <li>
+                <div class="seat sold"></div>
+                <small>Đã bán</small>
+            </li>
+        </ul>
+        <div class="container cinema-container">
+            <div class="screen"></div>
+            <div class="seats-container">
+            </div>
         </div>
     </div>
-</div>
 
 
-{{-- Cinema JS --}}
-<script>
-    const container = document.querySelector(".cinema-container");
-    const SeatsContainer = document.querySelector(".seats-container");
+    {{-- Cinema JS --}}
+    <script>
+        const container = document.querySelector(".cinema-container");
+        const SeatsContainer = document.querySelector(".seats-container");
 
-    var ShowId = {
-        {
-            $show - > id
-        }
-    };
+        var ShowId = {
+            {
+                $show - > id
+            }
+        };
 
-    // Tải dữ liệu giao diện bằng Ajax để lấy thông tin đặt chỗ
-    function populateUI() {
+        // Tải dữ liệu giao diện bằng Ajax để lấy thông tin đặt chỗ
+        function populateUI() {
 
-        // Xóa tất cả các ghế cũ
-        SeatsContainer.innerHTML = "";
+            // Xóa tất cả các ghế cũ
+            SeatsContainer.innerHTML = "";
 
-        // Lấy dữ liệu suất chiếu và hiển thị ghế phù hợp
-        $.get('/json/shows/' + ShowId, function(show) {
-            populateSeats(show['room']['size'], show['reservations']);
-        });
+            // Lấy dữ liệu suất chiếu và hiển thị ghế phù hợp
+            $.get('/json/shows/' + ShowId, function(show) {
+                populateSeats(show['room']['size'], show['reservations']);
+            });
 
-    }
-
-    function populateSeats(RoomSize, Reservations) {
-
-        console.log(RoomSize);
-
-        // Thêm ghế trống
-        var seat = '<div class="row">' +
-            '    <div class="seat"></div>' +
-            '    <div class="seat"></div>' +
-            '    <div class="seat"></div>' +
-            '    <div class="seat"></div>' +
-            '    <div class="seat"></div>' +
-            '    <div class="seat"></div>' +
-            '</div>';
-        for (let i = 0; i < RoomSize / 6; i++) {
-            SeatsContainer.innerHTML += seat;
         }
 
-        // Thêm ghế đã được đặt
-        $('.cinema-container .seat').each(function(i) {
-            if (Reservations.includes(i))
-                $(this).addClass("sold");
-        });
-    }
-</script>
+        function populateSeats(RoomSize, Reservations) {
 
-<style>
-    .res-container * {
-        box-sizing: border-box;
-    }
+            console.log(RoomSize);
 
-    .res-container {
-        background-color: #242333;
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: auto;
-        border-radius: 2rem;
-        max-width: 500px;
-        padding: 30px;
-    }
+            // Thêm ghế trống
+            var seat = '<div class="row">' +
+                '    <div class="seat"></div>' +
+                '    <div class="seat"></div>' +
+                '    <div class="seat"></div>' +
+                '    <div class="seat"></div>' +
+                '    <div class="seat"></div>' +
+                '    <div class="seat"></div>' +
+                '</div>';
+            for (let i = 0; i < RoomSize / 6; i++) {
+                SeatsContainer.innerHTML += seat;
+            }
 
-    .cinema-container {
-        perspective: 1000px;
-        margin-bottom: 30px;
-        width: 100%;
-        padding-left: 15px;
-        padding-right: 15px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+            // Thêm ghế đã được đặt
+            $('.cinema-container .seat').each(function(i) {
+                if (Reservations.includes(i))
+                    $(this).addClass("sold");
+            });
+        }
+    </script>
 
-    .seat {
-        background-color: #444451;
-        height: 26px;
-        width: 32px;
-        margin: 3px;
-        font-size: 50px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
+    <style>
+        .res-container * {
+            box-sizing: border-box;
+        }
 
-    .seat.selected {
-        background-color: green;
-    }
+        .res-container {
+            background-color: #242333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            border-radius: 2rem;
+            max-width: 500px;
+            padding: 30px;
+        }
 
-    .seat.sold {
-        background-color: #fff;
-    }
+        .cinema-container {
+            perspective: 1000px;
+            margin-bottom: 30px;
+            width: 100%;
+            padding-left: 15px;
+            padding-right: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-    .seat:nth-of-type(1) {
-        margin-right: 18px;
-    }
+        .seat {
+            background-color: #444451;
+            height: 26px;
+            width: 32px;
+            margin: 3px;
+            font-size: 50px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
 
-    .seat:nth-last-of-type(1) {
-        margin-left: 18px;
-    }
+        .seat.selected {
+            background-color: green;
+        }
 
-    .seat:not(.sold):hover {
-        cursor: pointer;
-        transform: scale(1.2);
-    }
+        .seat.sold {
+            background-color: #fff;
+        }
 
-    .showcase .seat:not(.sold):hover {
-        cursor: default;
-        transform: scale(1);
-    }
+        .seat:nth-of-type(1) {
+            margin-right: 18px;
+        }
 
-    .showcase {
-        background: rgba(0, 0, 0, 0.1);
-        padding: 5px 5px;
-        border-radius: 5px;
-        color: #777;
-        list-style-type: none;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-    }
+        .seat:nth-last-of-type(1) {
+            margin-left: 18px;
+        }
 
-    .showcase li {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 10px;
-    }
+        .seat:not(.sold):hover {
+            cursor: pointer;
+            transform: scale(1.2);
+        }
 
-    .showcase li small {
-        margin-left: 2px;
-    }
+        .showcase .seat:not(.sold):hover {
+            cursor: default;
+            transform: scale(1);
+        }
 
-    .row {
-        display: flex;
-        justify-content: center;
-    }
+        .showcase {
+            background: rgba(0, 0, 0, 0.1);
+            padding: 5px 5px;
+            border-radius: 5px;
+            color: #777;
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
 
-    .screen {
-        background-color: #fff;
-        height: 120px;
-        width: 100%;
-        margin: 15px 0;
-        transform: rotateX(-48deg);
-        box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
-    }
+        .showcase li {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+        }
 
-    .reservation-text {
-        margin: 5px 0;
-    }
+        .showcase li small {
+            margin-left: 2px;
+        }
 
-    .reservation-text span {
-        color: rgb(158, 248, 158);
-    }
+        .row {
+            display: flex;
+            justify-content: center;
+        }
 
-    .reservation-movie-details {
-        width: 45%;
-    }
-</style>
+        .screen {
+            background-color: #fff;
+            height: 120px;
+            width: 100%;
+            margin: 15px 0;
+            transform: rotateX(-48deg);
+            box-shadow: 0 3px 10px rgba(255, 255, 255, 0.7);
+        }
 
-<div class="justify-content-center text-center">
-    <button class="btn btn-primary m-2 justify-content-center" onclick="populateUI()">Tải Đặt Chỗ</button>
-</div>
+        .reservation-text {
+            margin: 5px 0;
+        }
 
-<div class="row justify-content-end">
-    <a href="{{ route('manager.shows.edit',$show->id) }}" class="btn btn-warning m-2">Chỉnh sửa</a>
-    <form action="{{ route('manager.shows.destroy',$show->id) }}"
-        method="POST">
-        @csrf
-        @method('DELETE')
-        <input class="btn btn-danger text-white m-2"
-            type="submit"
-            value="Xóa">
-    </form>
-</div>
+        .reservation-text span {
+            color: rgb(158, 248, 158);
+        }
 
-@include('components.flash-message')
+        .reservation-movie-details {
+            width: 45%;
+        }
+    </style>
+
+    <div class="justify-content-center text-center">
+        <button class="btn btn-primary m-2 justify-content-center" onclick="populateUI()">Tải Đặt Chỗ</button>
+    </div>
+
+    <div class="row justify-content-end">
+        <a href="{{ route('manager.shows.edit', $show->id) }}" class="btn btn-warning m-2">Chỉnh sửa</a>
+        <form action="{{ route('manager.shows.destroy', $show->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <input class="btn btn-danger text-white m-2" type="submit" value="Xóa">
+        </form>
+    </div>
+
+    @include('components.flash-message')
 @endsection
