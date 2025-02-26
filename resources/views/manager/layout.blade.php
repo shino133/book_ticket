@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 @php
     use Illuminate\Support\Facades\Route;
@@ -18,13 +18,13 @@
     <!-- ===== Favicon ===== -->
     <link rel="shortcut icon" href={{ asset('images/branding/logos/favicon.png') }} type="image/x-icon">
 
-    <title>{{ config('app.name') }} | Bảng điều khiển quản trị</title>
+    <title>{{ config('app.name') }} | Admin Panel</title>
 
-    <!-- Phông chữ tùy chỉnh cho mẫu này -->
+    <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="{{ asset('css/font-awesome-all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/nunito-font.css') }}">
 
-    <!-- Kiểu tùy chỉnh cho mẫu này -->
+    <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     @stack('head')
@@ -33,34 +33,34 @@
 
 <body id="page-top">
 
-    <!-- Vỏ trang -->
+    <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Thanh bên -->
+        <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Logo thương hiệu -->
+            <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
-                <img class="w-100" src="{{ asset('images/branding/logos/logo-w.png') }}" alt="Logo Cinemat">
+                <img class="w-100" src="{{ asset('images/branding/logos/logo-w.png') }}" alt="cinemat white logo">
             </a>
 
-            <!-- Phân cách -->
+            <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Mục điều hướng - Bảng điều khiển -->
+            <!-- Nav Item - Dashboard -->
             <li class="nav-item {{ Route::is('manager.dashboard') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('manager.dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Bảng điều khiển</span></a>
+                    <span>Dashboard</span></a>
             </li>
 
-            <!-- Phân cách -->
+            <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Tiêu đề -->
+            <!-- Heading -->
             <div class="sidebar-heading">Phim</div>
 
-            <!-- Mục điều hướng - Phim -->
+            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item {{ Route::is('manager.movies.*') ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMovie"
                     aria-expanded="true" aria-controls="collapseMovie">
@@ -71,67 +71,70 @@
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item {{ Route::is(['manager.movies.index', 'manager.movies.show', 'manager.movies.edit']) ? 'active' : '' }}"
-                            href="{{ route('manager.movies.index') }}">Xem danh sách phim</a>
+                            href="{{ route('manager.movies.index') }}">Xem chi tiết Phim</a>
                         <a class="collapse-item {{ Route::is('manager.movies.create') ? 'active' : '' }}"
-                            href="{{ route('manager.movies.create') }}">Thêm phim mới</a>
+                            href="{{ route('manager.movies.create') }}">Thêm PhimPhim</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Phân cách -->
+            <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Tiêu đề -->
-            <div class="sidebar-heading">Suất chiếu</div>
+            <!-- Heading -->
+            <div class="sidebar-heading">Shows</div>
 
-            <!-- Mục điều hướng - Suất chiếu -->
+            <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item {{ Route::is('manager.shows.*') ? 'active' : '' }}">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseShow"
                     aria-expanded="true" aria-controls="collapseShow">
                     <i class="fas fa-fw fa-compact-disc"></i>
-                    <span>Suất chiếu</span>
+                    <span>Show</span>
                 </a>
                 <div id="collapseShow" class="collapse {{ Route::is('manager.shows.*') ? 'show' : '' }}"
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item {{ Route::is(['manager.shows.index', 'manager.shows.edit', 'manager.shows.show']) ? 'active' : '' }}"
-                            href="{{ route('manager.shows.index') }}">Xem danh sách suất chiếu</a>
+                            href="{{ route('manager.shows.index') }}">xem chi tiếttiết
+                            Shows</a>
                         <a class="collapse-item {{ Route::is('manager.shows.create') ? 'active' : '' }}"
-                            href="{{ route('manager.shows.create') }}">Thêm suất chiếu mới</a>
+                            href="{{ route('manager.shows.create') }}">ThêmThêm
+                            Show</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Phân cách -->
+            <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <!-- Nút thu gọn thanh bên -->
+            <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
 
         </ul>
-        <!-- Kết thúc thanh bên -->
+        <!-- End of Sidebar -->
 
-        <!-- Nội dung trang -->
+        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Nội dung chính -->
+            <!-- Main Content -->
             <div id="content">
 
-                <!-- Thanh điều hướng -->
+                <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    <!-- Nút thu gọn thanh bên -->
+                    <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Thanh tìm kiếm -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small"
-                                placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="basic-addon2">
+                                placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -140,20 +143,46 @@
                         </div>
                     </form>
 
-                    <!-- Điều hướng trên thanh trên cùng -->
+                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Mục thông báo -->
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
                                 <span class="badge badge-danger badge-counter">{{ $shows->count() }}</span>
                             </a>
+                            <!-- Dropdown - Alerts -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Thông báo suất chiếu sắp tới
+                                    Cảnh báo chương trình sắp tới
                                 </h6>
                                 @foreach ($shows->take(5) as $show)
                                     <a class="dropdown-item d-flex align-items-center"
@@ -167,28 +196,120 @@
                                             <div class="small text-gray-500">
                                                 {{ $show->date->diffForHumans() }}
                                             </div>
-                                            <span class="font-weight-bold">Suất chiếu sắp tới cho {{ $show->movie->title }}.</span>
+                                            <span class="font-weight-bold">Chương trình sắp tới cho
+                                                {{ $show->movie->title }}.</span>
                                         </div>
                                     </a>
                                 @endforeach
+                                <a class="dropdown-item text-center small text-gray-500"
+                                    href="{{ route('manager.shows.index') }}">Hiển thị tất cả cảnh báo</a>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->username }}</span>
+                                <img class="img-profile rounded-circle"
+                                    src="{{ asset('images/other/profile-1.svg') }}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('manager.movies.index') }}">
+                                    <i class="fas fa-user-tie fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Phim
+                                </a>
+                                <a class="dropdown-item" href="{{ route('manager.shows.index') }}">
+                                    <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Shows
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Đăng xuất
+                                </a>
                             </div>
                         </li>
 
                     </ul>
 
                 </nav>
-                <!-- Kết thúc thanh điều hướng -->
+                <!-- End of Topbar -->
 
-                <!-- Nội dung trang -->
+                <!-- Begin Page Content -->
                 <div class="container-fluid">
+
                     @yield('content')
+
                 </div>
+                <!-- /.container-fluid -->
 
             </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; {{ config('app.name') }}
+                            2021</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
+        <!-- End of Content Wrapper -->
 
     </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn đã sẵn sàng kết thúc phiên làm việc hiện tại.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
+                    <form id="logout_form" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a class="btn btn-primary text-white" href="javascript:{}"
+                            onclick="document.getElementById('logout_form').submit();">Đăng xuất</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset('js/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('js/sb-admin-2.js') }}"></script>
+
+    @stack('foot')
 </body>
 
 </html>
