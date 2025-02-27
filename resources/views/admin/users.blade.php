@@ -19,10 +19,11 @@
                     <td>{{ $user->email }}</td>
                     @if (!$user->isAdmin())
                         <td class="">
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST">
                                 @csrf
                                 @method('delete')
-                                <input class="btn btn-danger text-white" type="submit" value="Delete User">
+                                <button class="btn btn-danger text-white" type="submit"
+                                    onclick="return confirm('Xác nhận hành động')">Xóa người dùng</button>
                             </form>
                         </td>
                     @else

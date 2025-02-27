@@ -58,14 +58,14 @@
             <!-- Heading -->
             <div class="sidebar-heading">Người sử dụng</div>
 
-            <li class="nav-item {{ \Request::route()->getName() === 'users.index' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('users.index') }}">
+            <li class="nav-item {{ \Request::route()->getName() === 'admin.users.index' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.users.index') }}">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Xem người dùng</span></a>
             </li>
 
-            <li class="nav-item {{ \Request::route()->getName() === 'users.manager-requests' ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('users.manager-requests') }}">
+            <li class="nav-item {{ \Request::route()->getName() === 'admin.manager-requests' ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.manager-requests') }}">
                     <i class="fas fa-fw fa-user-tie"></i>
                     <span>Yêu cầu của người quản lý</span></a>
             </li>
@@ -151,7 +151,7 @@
                                 </h6>
                                 @foreach ($requests->take(5) as $request)
                                     <a class="dropdown-item d-flex align-items-center"
-                                        href="{{ route('users.manager-requests') . '#' . $request->id }}">
+                                        href="{{ route('admin.manager-requests') . '#' . $request->id }}">
                                         <div class="mr-3">
                                             <div class="icon-circle bg-primary">
                                                 <i class="fas fa-user text-white"></i>
@@ -166,7 +166,7 @@
                                     </a>
                                 @endforeach
                                 <a class="dropdown-item text-center small text-gray-500"
-                                    href="{{ route('users.manager-requests') }}">Hiển thị tất cả cảnh báo</a>
+                                    href="{{ route('admin.manager-requests') }}">Hiển thị tất cả cảnh báo</a>
                             </div>
                         </li>
 
@@ -184,11 +184,11 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="{{ route('users.manager-requests') }}">
+                                <a class="dropdown-item" href="{{ route('admin.manager-requests') }}">
                                     <i class="fas fa-user-tie fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Yêu cầu của người quản lý
                                 </a>
-                                <a class="dropdown-item" href="{{ route('users.index') }}">
+                                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                                     <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Tổng quan về người dùng
                                 </a>

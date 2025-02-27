@@ -19,19 +19,19 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td class="">
-                        <form action="{{ route('users.update', $user->id) }}" method="POST">
+                        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="accepted" value=1>
-                            <input class="btn btn-info text-white" type="submit" value="Accept">
+                            <input class="btn btn-info text-white" type="submit" value="Xác nhận">
                         </form>
                     </td>
                     <td class="">
-                        <form action="{{ route('users.update', $user->id) }}" method="POST">
+                        <form action="{{ route('admin.users.update', $user->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="accepted" value=0>
-                            <input class="btn btn-danger text-white" type="submit" value="Reject">
+                            <input class="btn btn-danger text-white" type="submit" value="Từ chối">
                         </form>
                     </td>
                 </tr>
