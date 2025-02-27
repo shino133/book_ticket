@@ -66,10 +66,10 @@
                         <label for="sort" class="pr-1 text-nowrap">Sắp xếp theo: </label>
                         @php
                             $sortings = [
-                                'default' => 'Default Order',
-                                'top-rated' => 'Top Rated',
-                                'newest' => 'Newest',
-                                'oldest' => 'Oldest',
+                                'default' => 'Mặc định',
+                                'top-rated' => 'Đánh giá cao',
+                                'newest' => 'Mới nhất',
+                                'oldest' => 'Cũ nhất',
                             ];
                         @endphp
                         <select name="sort" id="sort" class="py-1">
