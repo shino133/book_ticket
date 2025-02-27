@@ -80,8 +80,7 @@
                             <a href="{{ route('dashboard') }}" class="btn btn-main btn-effect login-btn">
                                 <i class="icon-user"></i>Xin Chào, {{ auth()->user()->first_name }}</a>
                             <div class="dropdown-content rounded font-weight-normal">
-                                <a href="{{ route('dashboard') }}">Tài Khoản của Tôi </a>
-                                <a href="{{ route('dashboard') }}">Đặt chỗ của tôi</a>
+                                <a href="{{ route('dashboard') }}">Tài Khoản</a>
                                 @can('admin')
                                     <a href="{{ route('admin.dashboard') }}">Admin Dashboard</a>
                                 @endcan
