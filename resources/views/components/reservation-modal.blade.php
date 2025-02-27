@@ -4,13 +4,13 @@
 
         <!-- One "tab" for each step in the form: -->
         <div class="tab">
-            <h2>Reserve seats</h2>
+            <h2>Đặt chỗ ngồi</h2>
             @include('components.cinema-view')
         </div>
 
         @auth
             <div class="tab" style="display: none">
-                <h2>Payment details</h2>
+                <h2>Thanh toán</h2>
                 @include('components.payment-view')
             </div>
         @endauth
