@@ -22,13 +22,13 @@
 
                         <ul class="movie-subtext">
                             <li>{{ $movie->maturity_rating }}</li>
-                            <li>{{ $movie->running_time->format('G \h i\m\i\n') }}
+                            <li>{{ $movie->running_time }}
                             </li>
                             <li>{{ $movie->category->title }}</li>
-                            <li>{{ $movie->release_date->format('d M Y') }}</li>
+                            <li>{{ $movie->release_date }}</li>
                         </ul>
 
-                        <a href="#reserve-now" class="btn btn-main btn-effect">Get tickets</a>
+                        <a href="#reserve-now" class="btn btn-main btn-effect">Đặt vé</a>
                         <a href="#" class="btn rate-movie"><i class="icon-heart"></i></a>
 
                         <div class="rating mt10">
@@ -56,24 +56,24 @@
 
                         <!-- Cốt truyện -->
                         <div class="storyline">
-                            <h3 class="title">Storyline</h3>
+                            <h3 class="title">Cốt truyện</h3>
 
                             <p>{{ $movie->storyline }}</p>
                         </div>
 
                         <!-- Xuất chiếu -->
                         <div class="movie-media mt50">
-                            <h3 id="reserve-now" class="title">Reserve your ticket!</h3>
+                            <h3 id="reserve-now" class="title">Đặt vé</h3>
                             {{-- {{ ddd($shows->first()->date) }} --}}
                             @if ($shows->isNotEmpty())
                                 <table class="table-responsive showtime-table table table-striped table-hover">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Start time</th>
-                                            <th scope="col">End time</th>
-                                            <th scope="col">Ticket price</th>
-                                            <th scope="col">Remaining seats</th>
+                                            <th scope="col">Ngày chiếu</th>
+                                            <th scope="col">Thời gian bắt đầu</th>
+                                            <th scope="col">Thời gian kết thúc</th>
+                                            <th scope="col">Giá vé</th>
+                                            <th scope="col">Số ghế còn lại</th>
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
@@ -88,7 +88,8 @@
                                             </td>
                                             <td><a href="#reservation-popup"
                                                     class="btn btn-second btn-effect open-reservation-popup"
-                                                    onclick="populateUI({{ $show->id . ',\'' . $show->date . '\',' . $show->price . ',' . (auth()->check() ? 'true' : 'false') }})">Reserve</a>
+                                                    onclick="populateUI({{ $show->id . ',\'' . $show->date . '\',' . $show->price . ',' . (auth()->check() ? 'true' : 'false') }})">Đặt
+                                                    vé</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -124,7 +125,7 @@
                                 <li><strong>Xếp hạng độ tuổi:
                                     </strong>{{ $movie->maturity_rating }}</li>
                                 <li><strong>Thời lượng:
-                                    </strong>{{ $movie->running_time->format('G \h i\m\i\n') }}
+                                    </strong>{{ $movie->running_time }}
                                 </li>
                             </ul>
                         </aside>
@@ -161,5 +162,5 @@
     </section>
     <!-- =============== KẾT THÚC PHẦN PHIM ĐỀ XUẤT =============== -->
 
-    
+
 @endsection
