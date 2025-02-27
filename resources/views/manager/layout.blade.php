@@ -28,7 +28,7 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     @stack('head')
-
+    @stack('styles')
 </head>
 
 <body id="page-top">
@@ -95,11 +95,17 @@
                     aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item {{ Route::is(['manager.shows.index', 'manager.shows.edit', 'manager.shows.show']) ? 'active' : '' }}"
+<<<<<<< Updated upstream
                             href="{{ route('manager.shows.index') }}">xem chi tiếttiết
                             Shows</a>
                         <a class="collapse-item {{ Route::is('manager.shows.create') ? 'active' : '' }}"
                             href="{{ route('manager.shows.create') }}">ThêmThêm
                             Show</a>
+=======
+                            href="{{ route('manager.shows.index') }}">Xem danh sách</a>
+                        <a class="collapse-item {{ Route::is('manager.shows.create') ? 'active' : '' }}"
+                            href="{{ route('manager.shows.create') }}">Thêm mới</a>
+>>>>>>> Stashed changes
                     </div>
                 </div>
             </li>
@@ -129,12 +135,21 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
+<<<<<<< Updated upstream
                     <!-- Topbar Search -->
                     <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small"
                                 placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
+=======
+                    <!-- Thanh tìm kiếm -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+>>>>>>> Stashed changes
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -146,7 +161,11 @@
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
+<<<<<<< Updated upstream
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+=======
+                        <!-- Mục thông báo -->
+>>>>>>> Stashed changes
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -182,7 +201,11 @@
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
+<<<<<<< Updated upstream
                                     Cảnh báo chương trình sắp tới
+=======
+                                    Thông báo
+>>>>>>> Stashed changes
                                 </h6>
                                 @foreach ($shows->take(5) as $show)
                                     <a class="dropdown-item d-flex align-items-center"
@@ -196,12 +219,17 @@
                                             <div class="small text-gray-500">
                                                 {{ $show->date->diffForHumans() }}
                                             </div>
+<<<<<<< Updated upstream
                                             <span class="font-weight-bold">Chương trình sắp tới cho
+=======
+                                            <span class="font-weight-bold">Suất chiếu mới cho bộ phim
+>>>>>>> Stashed changes
                                                 {{ $show->movie->title }}.</span>
                                         </div>
                                     </a>
                                 @endforeach
                                 <a class="dropdown-item text-center small text-gray-500"
+<<<<<<< Updated upstream
                                     href="{{ route('manager.shows.index') }}">Hiển thị tất cả cảnh báo</a>
                             </div>
                         </li>
@@ -234,8 +262,43 @@
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Đăng xuất
                                 </a>
+=======
+                                    href="{{ route('manager.shows.index') }}">Xem thêm</a>
+>>>>>>> Stashed changes
                             </div>
                         </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span
+                                    class="mr-2 d-none d-lg-inline text-gray-600 small">{{ auth()->user()->username }}</span>
+                                <img class="img-profile rounded-circle"
+                                    src="{{ asset('images/other/profile-1.svg') }}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ route('manager.movies.index') }}">
+                                    <i class="fas fa-user-tie fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Phim
+                                </a>
+                                <a class="dropdown-item" href="{{ route('manager.shows.index') }}">
+                                    <i class="fas fa-users fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Suất chiếu
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
 
                     </ul>
 
@@ -268,7 +331,10 @@
         <!-- End of Content Wrapper -->
 
     </div>
+<<<<<<< Updated upstream
     <!-- End of Page Wrapper -->
+=======
+>>>>>>> Stashed changes
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -281,6 +347,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+<<<<<<< Updated upstream
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
@@ -293,6 +360,21 @@
                         @csrf
                         <a class="btn btn-primary text-white" href="javascript:{}"
                             onclick="document.getElementById('logout_form').submit();">Đăng xuất</a>
+=======
+                    <h5 class="modal-title" id="exampleModalLabel">Đăng xuất</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bản sẵn sàng kết thúc phiên làm việc hiện tại.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <form id="logout_form" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a class="btn btn-primary text-white" href="javascript:{}"
+                            onclick="document.getElementById('logout_form').submit();">Logout</a>
+>>>>>>> Stashed changes
                     </form>
                 </div>
             </div>
@@ -308,8 +390,12 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ asset('js/sb-admin-2.js') }}"></script>
+<<<<<<< Updated upstream
 
     @stack('foot')
+=======
+    @stack('scripts')
+>>>>>>> Stashed changes
 </body>
 
 </html>
