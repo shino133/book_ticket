@@ -39,7 +39,7 @@
         </table>
     @else
         <div class="bg-light p-3 font-weight-bold rounded text-center">
-            Hiện tại không có chương trình nào.
+            Không có suất chiếu nào.
         </div>
     @endif
     @include('components.flash-message')

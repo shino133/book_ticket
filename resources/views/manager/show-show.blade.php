@@ -1,7 +1,7 @@
 @extends('manager.layout')
 
 @section('content')
-    <h1 class="h3 mb-4 text-gray-800">Xem Hiển thị</h1>
+    <h1 class="h3 mb-4 text-gray-800">Suất chiếu</h1>
 
     <div class="row">
         @include('components.form-input', [
@@ -83,17 +83,29 @@
         </div>
     </div>
 
+    <div class="justify-content-center text-center">
+        <button class="btn btn-primary m-2 justify-content-center" onclick="populateUI()">Tải Đặt Chỗ</button>
+    </div>
 
+    <div class="row justify-content-end">
+        <a href="{{ route('manager.shows.edit', $show->id) }}" class="btn btn-warning m-2">Chỉnh sửa</a>
+        <form action="{{ route('manager.shows.destroy', $show->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <input class="btn btn-danger text-white m-2" type="submit" value="Xóa">
+        </form>
+    </div>
+
+    @include('components.flash-message')
+@endsection
+
+@push('scripts')
     {{-- Cinema JS --}}
     <script>
         const container = document.querySelector(".cinema-container");
         const SeatsContainer = document.querySelector(".seats-container");
 
-        var ShowId = {
-            {
-                $show - > id
-            }
-        };
+        var ShowId = {{ $show->id }};
 
         // Tải dữ liệu giao diện bằng Ajax để lấy thông tin đặt chỗ
         function populateUI() {
@@ -132,6 +144,12 @@
             });
         }
     </script>
+<<<<<<< Updated upstream
+
+=======
+@endpush
+
+@push('styles')
 
     <style>
         .res-container * {
@@ -261,3 +279,5 @@
 
     @include('components.flash-message')
 @endsection
+=======
+@endpush
