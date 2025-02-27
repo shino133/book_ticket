@@ -40,7 +40,8 @@
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chương trình trong tuần tới
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Chương trình trong tuần
+                                tới
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $showsNextWeek }}</div>
                         </div>
@@ -103,7 +104,7 @@
     </div>
 @endsection
 
-@push('foot')
+@push('scripts')
     <script src="{{ asset('js/chart.js/Chart.min.js') }}"></script>
 
     <script>
