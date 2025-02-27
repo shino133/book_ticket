@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+//----------------------------------------------------------------------
+// Trang chủ và liên hệ
+//----------------------------------------------------------------------
 Route::get('/', function () {
     $movies = Movie::all()->collect();
     return view('home.home', [
@@ -45,54 +48,58 @@ Route::middleware('guest')->group(function () {
         'roles' => Role::whereNot('code', Role::ADMIN_CODE)->get()
     ])->name('register');
     Route::post('register', [UserController::class, 'store']);
+
+    // Leads (chỉ dành cho khách)
+    Route::post('leads', [LeadController::class, 'store'])->name('leads');
 });
 
 //----------------------------------------------------------------------
-// Route đăng xuất (auth required)
+// Routes yêu cầu xác thực (auth required)
 //----------------------------------------------------------------------
-Route::post('logout', [SessionController::class, 'destroy'])
-    ->name('logout')
-    ->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::post('logout', [SessionController::class, 'destroy'])->name('logout');
 
-//----------------------------------------------------------------------
-// Leads
-//----------------------------------------------------------------------
-Route::post('leads', [LeadController::class, 'store'])->middleware('guest')->name('leads');
+    // Đặt chỗ
+    Route::resource('reservations', ReservationController::class);
 
-// User Movies
-Route::resource('movies', UserMovieController::class, ['only' => [
-    'index', 'show',
-]]);
-
-// User Shows
-Route::get('json/shows/{show}', function (Show $show) {
-    $ret = $show->load('room')->toArray();
-    $ret['reservations'] = $show->reservationsSeats()->map(function ($i) {
-        return intval($i);
-    });
-    return $ret;
+    // Dashboard người dùng
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 });
 
-// Reservations
-Route::resource('reservations', ReservationController::class)->middleware('auth');
+//----------------------------------------------------------------------
+// Movies & Shows
+//----------------------------------------------------------------------
+Route::resource('movies', UserMovieController::class)->only(['index', 'show']);
 
-// Dashboard
-Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware('auth')->name('dashboard');
+Route::get('json/shows/{show}', fn (Show $show) =>
+    [
+        ...$show->load('room')->toArray(),
+        'reservations' => $show->reservationsSeats()->map(fn ($i) => intval($i)),
+    ]
+);
 
+//----------------------------------------------------------------------
 // Admin Panel
-Route::group(['prefix' => 'admin', 'middleware' => 'can:admin'], function () {
+//----------------------------------------------------------------------
+Route::prefix('admin')->middleware('can:admin')->name('admin.')->group(function () {
+    // Quản lý người dùng
     Route::resource('users', AdminUserController::class);
-    Route::get('manager-requests', [AdminUserController::class, 'managerRequests'])->name('users.manager-requests');
-    Route::get('dashboard', [AdminUserController::class, 'dashboard'])->name('admin.dashboard');
-});
+    Route::get('manager-requests', [AdminUserController::class, 'managerRequests'])->name('manager-requests');
 
-// Manager Movie
-Route::group(['prefix' => 'manager', 'middleware' => 'can:manager', 'as' => 'manager.'], function () {
+    // Trang dashboard
+    Route::get('dashboard', [AdminUserController::class, 'dashboard'])->name('dashboard');
+});
+//----------------------------------------------------------------------
+
+//----------------------------------------------------------------------
+// Manager Panel
+//----------------------------------------------------------------------
+Route::prefix('manager')->middleware('can:manager')->name('manager.')->group(function () {
+    // Quản lý phim
     Route::resource('movies', ManagerMovieController::class);
     Route::get('dashboard', [ManagerMovieController::class, 'dashboard'])->name('dashboard');
-});
 
-// Manager Shows
-Route::group(['prefix' => 'manager', 'middleware' => 'can:manager', 'as' => 'manager.'], function () {
+    // Quản lý suất chiếu
     Route::resource('shows', ManagerShowController::class);
 });
+//----------------------------------------------------------------------
