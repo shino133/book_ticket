@@ -33,6 +33,7 @@ class AdminUserController extends Controller
             'users' => User::where('wants_manager', 1)->get(),
         ]);
     }
+
     public function index()
     {
         return view('admin.users', [
@@ -52,9 +53,9 @@ class AdminUserController extends Controller
         $user->wants_manager = false;
         $user->save();
 
-        return redirect()->route('users.manager-requests')->with([
+        return redirect()->route('admin.users.manager-requests')->with([
             'flash' => 'success',
-            'message' => 'Updated user status successfully.',
+            'message' => 'Cập nhật yêu cầu quản lý thành công.',
         ]);
     }
 
@@ -62,9 +63,9 @@ class AdminUserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with([
+        return redirect()->route('admin.users.index')->with([
             'flash' => 'success',
-            'message' => 'Successfully deleted user.',
+            'message' => 'Xoá người dùng thành công.',
         ]);
     }
 }
