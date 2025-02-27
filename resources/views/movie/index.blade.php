@@ -50,7 +50,7 @@
                     <div class="d-flex align-items-center">
                         <label for="category" class="pr-1 text-nowrap">Thể loại:</label>
                         <select name="category" id="category" class="py-1">
-                            <option value="" default>Tất cả thể loạis</option>
+                            <option value="" default>Tất cả thể loại</option>
                             @foreach (\App\Models\Category::CATEGORIES as $category)
                                 <option value="{{ $category }}"
                                     {{ request('category') == $category ? 'selected' : '' }}>
